@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
   <head>
@@ -15,7 +16,7 @@
     <title>科學好好聽｜官方節目網站</title>
     <meta
       name="description"
-      content="科學好好聽官方網站：探索每一集精彩內容，串流播放、閱讀節目介紹，並在 KKBOX、Spotify、YouTube、Apple Podcast 等平台訂閱。"
+      content="科學好好聽官方網站：探索每一集精彩內容，串流播放、閱讀節目介紹，並在 KKBOX、Spotify、YouTube、Apple Podcasts 等平台訂閱。"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -560,12 +561,11 @@
       const loadingEl = document.getElementById('loading');
       const errorEl = document.getElementById('error');
       const episodesContainer = document.getElementById('episodes');
-      const RSS_FEED_URL =
-        'https://script.google.com/macros/s/AKfycbzJM_l5m59-avur_Zlu2yhizMytRzstOuBgMF9tni1JjXEINgx6N7OsA7FTw429S7A/exec';
+      //const RSS_FEED_URL = 'https://script.google.com/macros/s/AKfycbzJM_l5m59-avur_Zlu2yhizMytRzstOuBgMF9tni1JjXEINgx6N7OsA7FTw429S7A/exec';
+      const RSS_FEED_URL = 'soundon.xml';
       const RSS_FALLBACK_URL = 'rssfeed.xml';
-      const APPLE_LOOKUP_URL =
-        'https://script.google.com/macros/s/AKfycbzXuQi4Xs1yRfpzD4IoFQUCYuOZTKwKDbLJ5YiauAbk0L8FCcDrYCRFhuC2nkMBEFFI/exec';
-
+      //const APPLE_LOOKUP_URL = 'https://script.google.com/macros/s/AKfycbzXuQi4Xs1yRfpzD4IoFQUCYuOZTKwKDbLJ5YiauAbk0L8FCcDrYCRFhuC2nkMBEFFI/exec';
+      const APPLE_LOOKUP_URL = 'apple.json';
       const normalizeGuid = (value) => (typeof value === 'string' ? value.trim().toLowerCase() : '');
 
       async function fetchRssFeed() {
