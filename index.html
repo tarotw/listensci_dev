@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CHY03T07V7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-CHY03T07V7');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>科學好好聽｜官方節目網站</title>
+    <meta
+      name="description"
+      content="科學好好聽官方網站：探索每一集精彩內容，串流播放、閱讀節目介紹，並在 KKBOX、Spotify、YouTube、Apple Podcast 等平台訂閱。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Signika:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f7f9fc;
+        --fg: #1c2430;
+        --muted: #4d5b71;
+        --accent: #2b7de9;
+        --accent-dark: #1658a3;
+        --card-bg: rgba(255, 255, 255, 0.85);
+        --shadow: 0 18px 40px -24px rgba(20, 44, 90, 0.45);
+        font-size: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Noto Sans TC', 'Segoe UI', sans-serif;
+        background: linear-gradient(180deg, #eef3ff 0%, #fdfdfd 45%, #eef3ff 100%);
+        color: var(--fg);
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(16px);
+        background-color: rgba(247, 249, 252, 0.9);
+        border-bottom: 1px solid rgba(30, 60, 114, 0.08);
+      }
+
+      .top-bar {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 1rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        font-family: 'Signika', 'Noto Sans TC', sans-serif;
+        font-weight: 700;
+        font-size: 1.35rem;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      nav a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-left: 1.25rem;
+        transition: color 0.2s ease;
+      }
+
+      nav a:hover,
+      nav a:focus {
+        color: var(--accent);
+      }
+
+      main {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 3rem 1.25rem 4rem;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .hero-cover {
+        grid-column: span 5;
+        aspect-ratio: 1;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        background: #d7e3ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-content {
+        grid-column: span 7;
+        display: flex;
+        flex-direction: column;
+        gap: 1.35rem;
+      }
+
+      .cta-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+      }
+
+      .cta-button {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.6rem;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow: var(--shadow);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+      }
+
+      .cta-button:hover,
+      .cta-button:focus-visible {
+        background: var(--accent-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 22px 48px -24px rgba(20, 44, 90, 0.6);
+      }
+
+      .cta-button:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 3px;
+      }
+
+      .cta-note {
+        margin: 0;
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+
+      .hero-content h1 {
+        font-family: 'Signika', 'Noto Sans TC', sans-serif;
+        font-size: clamp(2rem, 2.6vw + 1.8rem, 3rem);
+        margin: 0;
+        line-height: 1.2;
+        color: #11274f;
+      }
+
+      .hero-content p {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .host-info {
+        font-weight: 600;
+        color: #f7fbff;
+        text-shadow: 0 0 12px rgba(17, 39, 79, 0.35);
+      }
+
+      .platforms {
+        margin: 4rem 0 3rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+      }
+
+      .platform-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 1.1rem 1.35rem;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .platform-card:hover,
+      .platform-card:focus-within {
+        transform: translateY(-4px);
+        box-shadow: 0 22px 48px -24px rgba(20, 44, 90, 0.6);
+      }
+
+      .platform-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: rgba(23, 84, 166, 0.1);
+        display: grid;
+        place-items: center;
+        font-size: 1.5rem;
+      }
+
+      .platform-card a {
+        color: var(--fg);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .platform-card span {
+        font-size: 0.85rem;
+        color: var(--muted);
+        display: block;
+      }
+
+      .section-title {
+        margin: 3rem 0 1.5rem;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #f7fbff;
+        text-shadow: 0 0 14px rgba(17, 39, 79, 0.4);
+      }
+
+      .episodes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.75rem;
+      }
+
+      .episode-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 1.75rem 1.6rem;
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        min-height: 100%;
+        backdrop-filter: blur(4px);
+      }
+
+      .episode-cover {
+        width: 100%;
+        aspect-ratio: 1.6;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #d4e4ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .episode-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .episode-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem 1rem;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .episode-meta span::before {
+        content: '•';
+        margin-right: 0.35rem;
+        color: rgba(43, 125, 233, 0.6);
+      }
+
+      .episode-meta span:first-child::before {
+        content: '';
+        margin: 0;
+      }
+
+      .episode-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        line-height: 1.5;
+        margin: 0;
+        color: #132d59;
+      }
+
+      .episode-description {
+        font-size: 0.98rem;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      .episode-description p {
+        margin: 0 0 0.8rem;
+      }
+
+      .episode-description a {
+        color: var(--accent);
+        text-decoration: underline;
+        word-break: break-all;
+      }
+
+      .audio-player {
+        width: 100%;
+      }
+
+      .episode-actions {
+        margin-top: auto;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .episode-action {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.35rem;
+        text-decoration: none;
+        box-shadow: var(--shadow);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+      }
+
+      .episode-action:hover,
+      .episode-action:focus-visible {
+        background: var(--accent-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 22px 48px -24px rgba(20, 44, 90, 0.6);
+      }
+
+      .episode-action:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 3px;
+      }
+
+      .episode-action .icon {
+        font-size: 1.35rem;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+        white-space: nowrap;
+      }
+
+      .episode-keywords {
+        font-size: 0.85rem;
+        color: var(--accent-dark);
+        background: rgba(43, 125, 233, 0.1);
+        padding: 0.5rem 0.75rem;
+        border-radius: 999px;
+        display: inline-block;
+        max-width: 100%;
+      }
+
+      .loading,
+      .error {
+        background: rgba(17, 39, 79, 0.08);
+        color: var(--muted);
+        border-radius: 16px;
+        padding: 1.2rem 1.5rem;
+        font-size: 1rem;
+      }
+
+      footer {
+        margin-top: 4rem;
+        padding: 2.5rem 1.25rem 3rem;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      @media (max-width: 960px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-cover {
+          grid-column: span 12;
+          max-width: 320px;
+          margin: 0 auto;
+        }
+
+        .hero-content {
+          grid-column: span 12;
+        }
+
+        nav {
+          display: none;
+        }
+
+        header {
+          position: static;
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101522;
+          --fg: #f4f7ff;
+          --muted: #c1c7d6;
+          --accent: #75a9ff;
+          --accent-dark: #4f86df;
+          --card-bg: rgba(16, 23, 38, 0.9);
+          --shadow: 0 20px 48px -28px rgba(9, 15, 30, 0.85);
+        }
+
+        body {
+          background: radial-gradient(circle at top, #1d2740, #0b101c 60%);
+          color: var(--fg);
+        }
+
+        header {
+          background-color: rgba(16, 23, 38, 0.9);
+          border-bottom-color: rgba(117, 169, 255, 0.15);
+        }
+
+        .hero-content h1 {
+          color: #e6edff;
+        }
+
+        .episode-title {
+          color: #e6edff;
+        }
+
+        .episode-description a {
+          color: #a6c9ff;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="top-bar">
+        <a class="brand" href="#top">科學好好聽</a>
+        <nav aria-label="主選單">
+          <a href="#platforms">收聽平台</a>
+          <a href="#episodes">節目列表</a>
+          <a href="#about">關於節目</a>
+        </nav>
+      </div>
+    </header>
+    <main id="top">
+      <section class="hero" id="about">
+        <div class="hero-cover" aria-hidden="true">
+          <img id="show-cover" alt="科學好好聽節目封面" />
+        </div>
+        <div class="hero-content">
+          <h1 id="show-title">科學好好聽</h1>
+          <p id="show-description">
+            這是一檔為學齡兒童量身打造、也讓大人愛不釋手的科普廣播節目！
+          </p>
+          <div class="host-info" id="show-author">主持：Kyle Huang</div>
+          <div class="cta-group">
+            <a
+              class="cta-button"
+              href="https://www.facebook.com/profile.php?id=61577975781160"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              👍 前往 Facebook 粉絲頁按讚
+            </a>
+            <p class="cta-note">加入粉絲頁掌握最新活動與幕後花絮，一起支持節目！</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="listen-title">
+        <h2 class="section-title" id="listen-title">在你喜歡的平台收聽</h2>
+        <div class="platforms" id="platforms">
+          <article class="platform-card">
+            <div class="platform-icon" aria-hidden="true">🎧</div>
+            <div>
+              <a href="https://podcast.kkbox.com/tw/channel/KkRvjF8kret9SG5Nbf?fbclid=IwY2xjawMfMYFleHRuA2FlbQIxMABicmlkETFPMlE0djVsc0N4MEUwVFJLAR5IiqX7vLwkkaqyRihmmx0llY6GXN3GuDyD6t6h43Ig77QGPlxLNm7sVRXm5g_aem_uKe4S_oxmfME6YJOMMFYCQ" target="_blank" rel="noreferrer">KKBOX Podcast</a>
+              <span>訂閱節目並獲得最新集數</span>
+            </div>
+          </article>
+          <article class="platform-card">
+            <div class="platform-icon" aria-hidden="true">🟢</div>
+            <div>
+              <a href="https://open.spotify.com/show/1eyISRdcgDTwZqIqrP1qKv?si=8bd0618bce4e4c3d&fbclid=IwY2xjawMfMjtleHRuA2FlbQIxMABicmlkETFPMlE0djVsc0N4MEUwVFJLAR4hxQKt2Pq3bpUT0XhAN6VNLRjYfjd7NAh8yYWiKy7ilq6jZ2NoHM5Uemx7qg_aem_KIarAhQSv6mOFL5UKDZtmQ&nd=1&dlsi=9795622803164950" target="_blank" rel="noreferrer">Spotify</a>
+              <span>串流或下載離線收聽</span>
+            </div>
+          </article>
+          <article class="platform-card">
+            <div class="platform-icon" aria-hidden="true">▶️</div>
+            <div>
+              <a href="https://www.youtube.com/playlist?list=PLLMTd7kOjc2Xb4GtG8oRF9amKathXcnEK" target="_blank" rel="noreferrer">YouTube</a>
+              <span>觀看音樂影片版與特別內容</span>
+            </div>
+          </article>
+          <article class="platform-card">
+            <div class="platform-icon" aria-hidden="true">🍎</div>
+            <div>
+              <a href="https://podcasts.apple.com/tw/podcast/%E7%A7%91%E5%AD%B8%E5%A5%BD%E5%A5%BD%E8%81%BD/id1812447277" target="_blank" rel="noreferrer">Apple Podcasts</a>
+              <span>在 iPhone、iPad 與 Mac 上追蹤</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="episodes-title">
+        <h2 class="section-title" id="episodes-title">最新與歷史集數</h2>
+        <div id="episodes" class="episodes" aria-live="polite">
+          <div class="loading" id="loading">資料載入中，請稍候…</div>
+        </div>
+        <div class="error" id="error" role="alert" hidden>
+          很抱歉，目前無法載入節目資訊。請稍後再試或直接於 SoundOn 平台收聽。
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        © <span id="copyright-year"></span> 科學好好聽｜以
+        <a href="https://script.google.com/macros/s/AKfycbzJM_l5m59-avur_Zlu2yhizMytRzstOuBgMF9tni1JjXEINgx6N7OsA7FTw429S7A/exec" target="_blank" rel="noreferrer">SoundOn RSS</a>
+        即時更新
+      </p>
+    </footer>
+
+    <script type="application/ld+json" id="structured-data">
+      {}
+    </script>
+
+    <script>
+      const structuredDataEl = document.getElementById('structured-data');
+      const loadingEl = document.getElementById('loading');
+      const errorEl = document.getElementById('error');
+      const episodesContainer = document.getElementById('episodes');
+      const RSS_FEED_URL =
+        'https://script.google.com/macros/s/AKfycbzJM_l5m59-avur_Zlu2yhizMytRzstOuBgMF9tni1JjXEINgx6N7OsA7FTw429S7A/exec';
+      const RSS_FALLBACK_URL = 'rssfeed.xml';
+      const APPLE_LOOKUP_URL =
+        'https://script.google.com/macros/s/AKfycbzXuQi4Xs1yRfpzD4IoFQUCYuOZTKwKDbLJ5YiauAbk0L8FCcDrYCRFhuC2nkMBEFFI/exec';
+
+      const normalizeGuid = (value) => (typeof value === 'string' ? value.trim().toLowerCase() : '');
+
+      async function fetchRssFeed() {
+        try {
+          const response = await fetch(RSS_FEED_URL, { cache: 'no-cache', mode: 'cors' });
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+          return response;
+        } catch (error) {
+          console.warn('Remote RSS 讀取失敗，改用預備來源。', error);
+          const fallbackResponse = await fetch(RSS_FALLBACK_URL, { cache: 'no-cache' });
+          if (!fallbackResponse.ok) {
+            throw new Error(`HTTP ${fallbackResponse.status}`);
+          }
+          return fallbackResponse;
+        }
+      }
+
+      async function fetchAppleEpisodeMap() {
+        try {
+          const response = await fetch(APPLE_LOOKUP_URL, { cache: 'no-cache', mode: 'cors' });
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+          const data = await response.json();
+          const results = Array.isArray(data?.results) ? data.results : [];
+          const map = new Map();
+          results.forEach((result) => {
+            if (result?.wrapperType !== 'podcastEpisode') return;
+            const guid = normalizeGuid(result.episodeGuid);
+            if (!guid || !result.trackViewUrl) return;
+            map.set(guid, result.trackViewUrl);
+          });
+          return map;
+        } catch (error) {
+          console.warn('Apple Podcasts 內容載入失敗，將略過外部播放連結。', error);
+          return new Map();
+        }
+      }
+
+      function sanitize(html) {
+        if (!html) return '';
+        const template = document.createElement('template');
+        template.innerHTML = html;
+        const forbiddenSelectors = ['script', 'style', 'iframe', 'object', 'embed', 'link'];
+        template.content.querySelectorAll(forbiddenSelectors.join(',')).forEach((el) => el.remove());
+        template.content.querySelectorAll('*').forEach((el) => {
+          [...el.attributes].forEach((attr) => {
+            const name = attr.name;
+            const value = attr.value;
+            if (name.startsWith('on')) {
+              el.removeAttribute(name);
+            }
+            if (name === 'href' || name === 'src') {
+              if (/^javascript:/i.test(value)) {
+                el.removeAttribute(name);
+              }
+            }
+            if (name === 'style') {
+              el.removeAttribute(name);
+            }
+          });
+        });
+        return template.innerHTML;
+      }
+
+      function formatDate(pubDate) {
+        if (!pubDate) return '';
+        const formatter = new Intl.DateTimeFormat('zh-TW', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'short'
+        });
+        const date = new Date(pubDate);
+        if (Number.isNaN(date.getTime())) return pubDate;
+        return formatter.format(date);
+      }
+
+      function formatDuration(durationValue) {
+        if (!durationValue) return '';
+        let totalSeconds = 0;
+        if (/^[0-9]+$/.test(durationValue.trim())) {
+          totalSeconds = parseInt(durationValue, 10);
+        } else {
+          const parts = durationValue.split(':').map((part) => parseInt(part, 10) || 0);
+          if (parts.length === 3) {
+            totalSeconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
+          } else if (parts.length === 2) {
+            totalSeconds = parts[0] * 60 + parts[1];
+          } else if (parts.length === 1) {
+            totalSeconds = parts[0];
+          }
+        }
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        const segments = [];
+        if (hours) segments.push(`${hours} 小時`);
+        if (minutes) segments.push(`${minutes} 分`);
+        if (!hours && seconds) segments.push(`${seconds} 秒`);
+        return segments.join(' ');
+      }
+
+      function createEpisodeCard(item, appleEpisodeMap = new Map()) {
+        const title = item.querySelector('title')?.textContent?.trim() ?? '未命名集數';
+        const pubDate = item.querySelector('pubDate')?.textContent;
+        const duration = item.getElementsByTagName('itunes:duration')[0]?.textContent;
+        const rawDescription =
+          item.getElementsByTagName('content:encoded')[0]?.textContent ||
+          item.querySelector('description')?.textContent ||
+          '';
+        const sanitizedDescription = sanitize(rawDescription);
+        const summary = item.getElementsByTagName('itunes:summary')[0]?.textContent?.trim();
+        const keywords = item.getElementsByTagName('itunes:keywords')[0]?.textContent?.trim();
+        const cover = item.getElementsByTagName('itunes:image')[0]?.getAttribute('href');
+        const guid = normalizeGuid(item.querySelector('guid')?.textContent);
+        const appleLink = guid ? appleEpisodeMap.get(guid) : undefined;
+
+        const card = document.createElement('article');
+        card.className = 'episode-card';
+
+        if (cover) {
+          const coverWrapper = document.createElement('div');
+          coverWrapper.className = 'episode-cover';
+          const coverImg = document.createElement('img');
+          coverImg.src = cover;
+          coverImg.alt = `${title} 封面`;
+          coverWrapper.appendChild(coverImg);
+          card.appendChild(coverWrapper);
+        }
+
+        const meta = document.createElement('div');
+        meta.className = 'episode-meta';
+        if (pubDate) {
+          const pub = document.createElement('span');
+          pub.textContent = formatDate(pubDate);
+          meta.appendChild(pub);
+        }
+        if (duration) {
+          const length = document.createElement('span');
+          length.textContent = `節目長度：${formatDuration(duration)}`;
+          meta.appendChild(length);
+        }
+        card.appendChild(meta);
+
+        const heading = document.createElement('h3');
+        heading.className = 'episode-title';
+        heading.textContent = title;
+        card.appendChild(heading);
+
+        const description = document.createElement('div');
+        description.className = 'episode-description';
+        if (sanitizedDescription) {
+          description.innerHTML = sanitizedDescription;
+        } else if (summary) {
+          description.textContent = summary;
+        }
+        card.appendChild(description);
+
+        if (appleLink) {
+          const actions = document.createElement('div');
+          actions.className = 'episode-actions';
+
+          const playLink = document.createElement('a');
+          playLink.className = 'episode-action';
+          playLink.href = appleLink;
+          playLink.target = '_blank';
+          playLink.rel = 'noopener noreferrer';
+          playLink.setAttribute('aria-label', `在 Apple Podcasts 播放〈${title}〉`);
+
+          const icon = document.createElement('span');
+          icon.className = 'icon';
+          icon.setAttribute('aria-hidden', 'true');
+          icon.textContent = '▶️';
+          playLink.appendChild(icon);
+
+          const srText = document.createElement('span');
+          srText.className = 'sr-only';
+          srText.textContent = `在 Apple Podcasts 播放〈${title}〉`;
+          playLink.appendChild(srText);
+
+          actions.appendChild(playLink);
+          card.appendChild(actions);
+        }
+
+        if (keywords) {
+          const keywordBadge = document.createElement('div');
+          keywordBadge.className = 'episode-keywords';
+          keywordBadge.textContent = `關鍵字：${keywords}`;
+          card.appendChild(keywordBadge);
+        }
+
+        return card;
+      }
+
+      async function hydrate() {
+        try {
+          const appleEpisodesPromise = fetchAppleEpisodeMap();
+          const response = await fetchRssFeed();
+          const xmlText = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(xmlText, 'application/xml');
+
+          const parserError = doc.querySelector('parsererror');
+          if (parserError) {
+            throw new Error('RSS 解析失敗');
+          }
+
+          const channel = doc.querySelector('channel');
+          if (!channel) {
+            throw new Error('找不到頻道資訊');
+          }
+
+          const showTitle = channel.querySelector(':scope > title')?.textContent?.trim();
+          const showDescription = channel.querySelector(':scope > description')?.textContent;
+          const showAuthor = channel.getElementsByTagName('itunes:author')[0]?.textContent;
+          const showImage = channel.querySelector('image > url')?.textContent;
+          const showLink = channel.querySelector(':scope > link')?.textContent;
+          const language = channel.querySelector(':scope > language')?.textContent || 'zh-Hant';
+
+          if (showTitle) {
+            document.getElementById('show-title').textContent = showTitle;
+          }
+
+          if (showDescription) {
+            document.getElementById('show-description').innerHTML = sanitize(showDescription);
+          }
+
+          if (showAuthor) {
+            document.getElementById('show-author').textContent = `主持：${showAuthor}`;
+          }
+
+          if (showImage) {
+            const coverImg = document.getElementById('show-cover');
+            coverImg.src = showImage;
+            coverImg.alt = `${showTitle || '節目'} 封面`;
+          }
+
+          if (showLink) {
+            const showLinkAnchor = document.querySelector('footer a');
+            if (showLinkAnchor) {
+              showLinkAnchor.href = showLink;
+            }
+          }
+
+          const now = new Date();
+          document.getElementById('copyright-year').textContent = now.getFullYear();
+
+          const items = Array.from(channel.getElementsByTagName('item'));
+          const appleEpisodeMap = await appleEpisodesPromise;
+          episodesContainer.innerHTML = '';
+          if (!items.length) {
+            const empty = document.createElement('div');
+            empty.className = 'error';
+            empty.textContent = '目前尚無公開集數，敬請期待！';
+            episodesContainer.appendChild(empty);
+          } else {
+            const fragment = document.createDocumentFragment();
+            items.forEach((item) => {
+              fragment.appendChild(createEpisodeCard(item, appleEpisodeMap));
+            });
+            episodesContainer.appendChild(fragment);
+          }
+
+          const structuredData = {
+            '@context': 'https://schema.org/',
+            '@type': 'PodcastSeries',
+            name: showTitle,
+            url: showLink,
+            image: showImage,
+            inLanguage: language,
+            description: channel.getElementsByTagName('itunes:summary')[0]?.textContent || showDescription,
+            author: {
+              '@type': 'Person',
+              name: showAuthor
+            },
+            potentialAction: [
+              {
+                '@type': 'ListenAction',
+                target: [showLink]
+              }
+            ]
+          };
+          structuredDataEl.textContent = JSON.stringify(structuredData, null, 2);
+        } catch (error) {
+          console.error(error);
+          loadingEl?.remove();
+          errorEl.hidden = false;
+        }
+      }
+
+      hydrate().finally(() => {
+        loadingEl?.remove();
+      });
+    </script>
+  </body>
+</html>
