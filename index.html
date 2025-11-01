@@ -831,20 +831,40 @@
         if (!episodesContainer) return;
         const hasActiveTags = activeTags.length > 0;
         let visibleCount = 0;
+        if (console.groupCollapsed) {
+          console.groupCollapsed('filterEpisodes');
+        } else if (console.group) {
+          console.group('filterEpisodes');
+        } else {
+          console.log('filterEpisodes');
+        }
+        console.log('Active tags:', Array.from(activeTagSet));
         episodesData.forEach(({ element, keywords }) => {
           const matches =
             !hasActiveTags || keywords.some((keyword) => activeTagSet.has(keyword));
           element.hidden = !matches;
+          const title = element.dataset.title || element.querySelector('.episode-title')?.textContent?.trim();
+          console.log('Episode visibility', {
+            title,
+            keywords,
+            matches
+          });
           if (matches) {
             visibleCount += 1;
           }
         });
+        console.log('Visible episode count:', visibleCount);
         if (noResultsEl) {
           if (!hasActiveTags) {
             noResultsEl.hidden = true;
+            console.log('No results indicator hidden (no active tags).');
           } else {
             noResultsEl.hidden = visibleCount > 0;
+            console.log('No results indicator hidden:', noResultsEl.hidden);
           }
+        }
+        if (console.groupEnd) {
+          console.groupEnd();
         }
       }
 
@@ -946,9 +966,13 @@
       }
 
       function addTag(tag) {
-        if (!tag || activeTagSet.has(tag)) return;
+        if (!tag || activeTagSet.has(tag)) {
+          console.log('addTag skipped - tag already active or invalid:', tag);
+          return;
+        }
         activeTags.push(tag);
         activeTagSet.add(tag);
+        console.log('Tag added:', tag, 'Active tags:', Array.from(activeTagSet));
         renderSelectedTags();
         filterEpisodes();
         if (tagInput) {
@@ -959,12 +983,16 @@
       }
 
       function removeTag(tag) {
-        if (!activeTagSet.has(tag)) return;
+        if (!activeTagSet.has(tag)) {
+          console.log('removeTag skipped - tag not active:', tag);
+          return;
+        }
         activeTagSet.delete(tag);
         const index = activeTags.indexOf(tag);
         if (index !== -1) {
           activeTags.splice(index, 1);
         }
+        console.log('Tag removed:', tag, 'Active tags:', Array.from(activeTagSet));
         renderSelectedTags();
         filterEpisodes();
         updateSuggestions();
@@ -1185,6 +1213,7 @@
 
         const card = document.createElement('article');
         card.className = 'episode-card';
+        card.dataset.title = title;
         card.dataset.keywords = JSON.stringify(keywordList);
 
         if (cover) {
