@@ -821,18 +821,7 @@
           chip.className = 'tag-chip';
           chip.setAttribute('data-tag', tag);
           chip.setAttribute('aria-label', `移除關鍵字 ${tag}`);
-
-          const label = document.createElement('span');
-          label.textContent = tag;
-
-          const removeIcon = document.createElement('span');
-          removeIcon.className = 'tag-chip-remove';
-          removeIcon.setAttribute('aria-hidden', 'true');
-          removeIcon.textContent = '×';
-
-          chip.appendChild(label);
-          chip.appendChild(removeIcon);
-
+          chip.innerHTML = `<span>${tag}</span><span class="tag-chip-remove" aria-hidden="true">×</span>`;
           selectedTagsContainer.appendChild(chip);
         });
       }
