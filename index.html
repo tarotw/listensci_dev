@@ -831,13 +831,7 @@
         if (!episodesContainer) return;
         const hasActiveTags = activeTags.length > 0;
         let visibleCount = 0;
-        if (console.groupCollapsed) {
-          console.groupCollapsed('filterEpisodes');
-        } else if (console.group) {
-          console.group('filterEpisodes');
-        } else {
-          console.log('filterEpisodes');
-        }
+        console.groupCollapsed('filterEpisodes');
         console.log('Active tags:', Array.from(activeTagSet));
         episodesData.forEach(({ element, keywords }) => {
           const matches =
@@ -863,9 +857,7 @@
             console.log('No results indicator hidden:', noResultsEl.hidden);
           }
         }
-        if (console.groupEnd) {
-          console.groupEnd();
-        }
+        console.groupEnd();
       }
 
       function setTagInputAvailability(isReady) {
