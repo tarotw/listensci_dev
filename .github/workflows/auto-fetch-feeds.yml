@@ -1,0 +1,83 @@
+name: Auto Fetch Podcast Feeds
+
+on:
+  schedule:
+    # 這個 cron 是「每天台北時間 02:00」執行
+    # 注意：cron 用 UTC，台北為 UTC+8，所以這裡設 18:00 UTC
+    - cron: '0 18 * * *'
+  workflow_dispatch: {}  # 允許手動觸發
+
+# 允許這個 workflow 寫入 repo（必要，不然無法 push）
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Show date/time
+        run: |
+          echo "Runner UTC time: $(date -u)"
+          echo "Runner local time: $(date)"
+
+      - name: Download feeds to temp files (with retry)
+        run: |
+          set -euo pipefail
+
+          # 下載到暫存檔
+          curl -fL --retry 5 --retry-delay 3 \
+            "https://feeds.soundon.fm/podcasts/cbbe3124-188a-4de6-87b4-2b65ed4f2d46.xml" \
+            -o soundon.xml.tmp
+
+          curl -fL --retry 5 --retry-delay 3 \
+            "https://itunes.apple.com/lookup?id=1812447277&country=tw&media=podcast&entity=podcastEpisode&limit=300" \
+            -o apple.json.tmp
+
+          # 如果新檔和舊檔不同，才覆蓋
+          if [ -f soundon.xml ]; then
+            if cmp -s soundon.xml.tmp soundon.xml; then
+              echo "soundon.xml unchanged."
+              rm soundon.xml.tmp
+            else
+              mv soundon.xml.tmp soundon.xml
+              echo "soundon.xml updated."
+            fi
+          else
+            mv soundon.xml.tmp soundon.xml
+            echo "soundon.xml created."
+          fi
+
+          if [ -f apple.json ]; then
+            if cmp -s apple.json.tmp apple.json; then
+              echo "apple.json unchanged."
+              rm apple.json.tmp
+            else
+              mv apple.json.tmp apple.json
+              echo "apple.json updated."
+            fi
+          else
+            mv apple.json.tmp apple.json
+            echo "apple.json created."
+          fi
+
+      - name: Commit changes (only if any)
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 檢查是否有變更
+          if [ -n "$(git status --porcelain)" ]; then
+            git add soundon.xml apple.json
+            git commit -m "Auto update feeds: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git push
+            echo "Changes committed & pushed."
+          else
+            echo "No changes to commit."
+          fi
