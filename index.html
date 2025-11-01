@@ -832,7 +832,8 @@
         const hasActiveTags = activeTags.length > 0;
         let visibleCount = 0;
         episodesData.forEach(({ element, keywords }) => {
-          const matches = !hasActiveTags || activeTags.every((tag) => keywords.includes(tag));
+          const matches =
+            !hasActiveTags || keywords.some((keyword) => activeTagSet.has(keyword));
           element.hidden = !matches;
           if (matches) {
             visibleCount += 1;
