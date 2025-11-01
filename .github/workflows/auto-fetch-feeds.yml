@@ -2,8 +2,8 @@ name: Auto Fetch Podcast Feeds
 
 on:
   schedule:
-    - cron: '30 1 * * *'  # 每 10 分鐘執行一次（UTC 基準，但這是頻率，不需換算）
-# 允許這個 workflow 寫入 repo（必要，不然無法 push）
+    - cron: '*/10 * * * *'  # 每 10 分鐘執行一次（UTC 基準）
+  workflow_dispatch: {}      # 允許手動觸發
 permissions:
   contents: write
 
