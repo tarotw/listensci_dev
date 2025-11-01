@@ -247,6 +247,159 @@
         gap: 1.75rem;
       }
 
+      .tag-search {
+        margin: 1.5rem 0 2rem;
+        padding: 1.35rem 1.5rem;
+        border-radius: 18px;
+        background: var(--card-bg);
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        position: relative;
+      }
+
+      .tag-search[hidden] {
+        display: none !important;
+      }
+
+      .tag-search-label {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #132d59;
+        margin: 0;
+      }
+
+      .tag-search-hint {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .tag-search-combobox {
+        position: relative;
+      }
+
+      .tag-search-control {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        min-height: 48px;
+        border: 1px solid rgba(43, 125, 233, 0.28);
+        border-radius: 12px;
+        padding: 0.5rem 0.75rem;
+        background: var(--card-bg);
+        transition: box-shadow 0.2s ease, border-color 0.2s ease;
+      }
+
+      .tag-search-control:focus-within {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(43, 125, 233, 0.18);
+      }
+
+      .selected-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        align-items: center;
+      }
+
+      .selected-tags:empty::before {
+        content: '尚未選擇關鍵字';
+        color: var(--muted);
+        font-size: 0.85rem;
+        opacity: 0.8;
+      }
+
+      .tag-chip {
+        border: none;
+        border-radius: 999px;
+        padding: 0.25rem 0.75rem;
+        padding-right: 0.55rem;
+        background: rgba(43, 125, 233, 0.16);
+        color: var(--accent-dark);
+        font-size: 0.82rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+      }
+
+      .tag-chip:hover,
+      .tag-chip:focus-visible {
+        background: rgba(43, 125, 233, 0.24);
+        transform: translateY(-1px);
+        outline: none;
+      }
+
+      .tag-chip-remove {
+        font-size: 1rem;
+        line-height: 1;
+      }
+
+      .tag-input-field {
+        flex: 1;
+        min-width: 160px;
+        border: none;
+        background: transparent;
+        font-size: 0.95rem;
+        color: inherit;
+        padding: 0.3rem 0;
+      }
+
+      .tag-input-field:focus {
+        outline: none;
+      }
+
+      .tag-suggestions {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 0.45rem);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border-radius: 12px;
+        border: 1px solid rgba(43, 125, 233, 0.25);
+        background: var(--card-bg);
+        box-shadow: var(--shadow);
+        max-height: 220px;
+        overflow-y: auto;
+        z-index: 12;
+      }
+
+      .tag-suggestions[hidden] {
+        display: none;
+      }
+
+      .tag-suggestion {
+        padding: 0.65rem 1rem;
+        font-size: 0.95rem;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(43, 125, 233, 0.12);
+        transition: background-color 0.15s ease;
+      }
+
+      .tag-suggestion:last-child {
+        border-bottom: none;
+      }
+
+      .tag-suggestion:hover,
+      .tag-suggestion.is-highlighted {
+        background: rgba(43, 125, 233, 0.14);
+      }
+
+      .no-results {
+        margin-top: 1.5rem;
+        background: rgba(17, 39, 79, 0.08);
+        border-radius: 16px;
+        padding: 1rem 1.25rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
       .episode-card {
         background: var(--card-bg);
         border-radius: 20px;
@@ -460,6 +613,39 @@
         .episode-description a {
           color: #a6c9ff;
         }
+
+        .tag-search {
+          background: var(--card-bg);
+        }
+
+        .tag-search-control {
+          background: var(--card-bg);
+          border-color: rgba(117, 169, 255, 0.45);
+        }
+
+        .tag-chip {
+          background: rgba(117, 169, 255, 0.24);
+          color: #e6edff;
+        }
+
+        .tag-chip:hover,
+        .tag-chip:focus-visible {
+          background: rgba(117, 169, 255, 0.3);
+        }
+
+        .tag-suggestion {
+          border-bottom-color: rgba(117, 169, 255, 0.18);
+        }
+
+        .tag-suggestion:hover,
+        .tag-suggestion.is-highlighted {
+          background: rgba(117, 169, 255, 0.2);
+        }
+
+        .no-results {
+          background: rgba(117, 169, 255, 0.18);
+          color: var(--fg);
+        }
       }
     </style>
   </head>
@@ -535,11 +721,37 @@
 
       <section aria-labelledby="episodes-title">
         <h2 class="section-title" id="episodes-title">最新與歷史集數</h2>
+        <div class="tag-search" id="tag-search" hidden>
+          <label class="tag-search-label" for="tag-input">以關鍵字搜尋集數</label>
+          <p class="tag-search-hint" id="tag-search-hint">輸入或選擇關鍵字（可複選）來過濾節目</p>
+          <div class="tag-search-combobox">
+            <div class="tag-search-control">
+              <div class="selected-tags" id="selected-tags" aria-live="polite"></div>
+              <input
+                id="tag-input"
+                class="tag-input-field"
+                type="text"
+                placeholder="輸入或選擇關鍵字"
+                autocomplete="off"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                aria-controls="tag-suggestions"
+                aria-describedby="tag-search-hint"
+              />
+            </div>
+            <ul class="tag-suggestions" id="tag-suggestions" role="listbox" hidden></ul>
+          </div>
+        </div>
         <div id="episodes" class="episodes" aria-live="polite">
           <div class="loading" id="loading">資料載入中，請稍候…</div>
         </div>
         <div class="error" id="error" role="alert" hidden>
           很抱歉，目前無法載入節目資訊。請稍後再試或直接於 SoundOn 平台收聽。
+        </div>
+        <div class="no-results" id="no-results" role="status" hidden>
+          沒有符合這些關鍵字的集數，試試其他組合吧！
         </div>
       </section>
     </main>
@@ -561,12 +773,294 @@
       const loadingEl = document.getElementById('loading');
       const errorEl = document.getElementById('error');
       const episodesContainer = document.getElementById('episodes');
+      const tagSearchWrapper = document.getElementById('tag-search');
+      const selectedTagsContainer = document.getElementById('selected-tags');
+      const tagInput = document.getElementById('tag-input');
+      const suggestionsList = document.getElementById('tag-suggestions');
+      const noResultsEl = document.getElementById('no-results');
+      const episodesData = [];
+      const allKeywordsSet = new Set();
+      const activeTags = [];
+      const activeTagSet = new Set();
+      let highlightedSuggestionIndex = -1;
+      const tagInputDefaultPlaceholder = tagInput?.getAttribute('placeholder') || '';
+      const TAG_INPUT_LOADING_PLACEHOLDER = '關鍵字載入中…';
+      let keywordDataReady = false;
       //const RSS_FEED_URL = 'https://script.google.com/macros/s/AKfycbzJM_l5m59-avur_Zlu2yhizMytRzstOuBgMF9tni1JjXEINgx6N7OsA7FTw429S7A/exec';
       const RSS_FEED_URL = 'soundon.xml';
       const RSS_FALLBACK_URL = 'rssfeed.xml';
       //const APPLE_LOOKUP_URL = 'https://script.google.com/macros/s/AKfycbzXuQi4Xs1yRfpzD4IoFQUCYuOZTKwKDbLJ5YiauAbk0L8FCcDrYCRFhuC2nkMBEFFI/exec';
       const APPLE_LOOKUP_URL = 'apple.json';
       const normalizeGuid = (value) => (typeof value === 'string' ? value.trim().toLowerCase() : '');
+      const TAG_SUGGESTION_LIMIT = 8;
+
+      function parseKeywords(keywordString = '') {
+        const seen = new Set();
+        return keywordString
+          .split(/[,，]/)
+          .map((keyword) => keyword.trim())
+          .filter((keyword) => {
+            if (!keyword || seen.has(keyword)) {
+              return false;
+            }
+            seen.add(keyword);
+            return true;
+          });
+      }
+
+      function getAvailableTags() {
+        return Array.from(allKeywordsSet).filter((tag) => !activeTagSet.has(tag));
+      }
+
+      function renderSelectedTags() {
+        if (!selectedTagsContainer) return;
+        selectedTagsContainer.innerHTML = '';
+        activeTags.forEach((tag) => {
+          const chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'tag-chip';
+          chip.setAttribute('data-tag', tag);
+          chip.setAttribute('aria-label', `移除關鍵字 ${tag}`);
+          chip.innerHTML = `<span>${tag}</span><span class="tag-chip-remove" aria-hidden="true">×</span>`;
+          selectedTagsContainer.appendChild(chip);
+        });
+      }
+
+      function filterEpisodes() {
+        if (!episodesContainer) return;
+        const hasActiveTags = activeTags.length > 0;
+        let visibleCount = 0;
+        episodesData.forEach(({ element, keywords }) => {
+          const matches = !hasActiveTags || activeTags.every((tag) => keywords.includes(tag));
+          element.hidden = !matches;
+          if (matches) {
+            visibleCount += 1;
+          }
+        });
+        if (noResultsEl) {
+          if (!hasActiveTags) {
+            noResultsEl.hidden = true;
+          } else {
+            noResultsEl.hidden = visibleCount > 0;
+          }
+        }
+      }
+
+      function setTagInputAvailability(isReady) {
+        if (!tagInput) return;
+        if (isReady) {
+          tagInput.disabled = false;
+          tagInput.removeAttribute('disabled');
+          tagInput.removeAttribute('aria-disabled');
+          if (tagInputDefaultPlaceholder) {
+            tagInput.setAttribute('placeholder', tagInputDefaultPlaceholder);
+          } else {
+            tagInput.removeAttribute('placeholder');
+          }
+        } else {
+          tagInput.disabled = true;
+          tagInput.setAttribute('aria-disabled', 'true');
+          tagInput.setAttribute('placeholder', TAG_INPUT_LOADING_PLACEHOLDER);
+          tagInput.value = '';
+        }
+      }
+
+      function updateSuggestions() {
+        if (!tagInput || !suggestionsList) return;
+        if (!keywordDataReady) {
+          suggestionsList.hidden = true;
+          tagInput.setAttribute('aria-expanded', 'false');
+          highlightedSuggestionIndex = -1;
+          tagInput.removeAttribute('aria-activedescendant');
+          return;
+        }
+        suggestionsList.innerHTML = '';
+        highlightedSuggestionIndex = -1;
+        tagInput.removeAttribute('aria-activedescendant');
+        const availableTags = getAvailableTags();
+        if (!availableTags.length) {
+          suggestionsList.hidden = true;
+          tagInput.setAttribute('aria-expanded', 'false');
+          return;
+        }
+        const query = tagInput.value.trim().toLowerCase();
+        const matches = query
+          ? availableTags.filter((tag) => tag.toLowerCase().includes(query))
+          : availableTags;
+        const limited = matches.slice(0, TAG_SUGGESTION_LIMIT);
+        if (!limited.length || document.activeElement !== tagInput) {
+          suggestionsList.hidden = true;
+          tagInput.setAttribute('aria-expanded', 'false');
+          return;
+        }
+        limited.forEach((tag, index) => {
+          const option = document.createElement('li');
+          option.className = 'tag-suggestion';
+          option.id = `tag-suggestion-${index}`;
+          option.setAttribute('role', 'option');
+          option.textContent = tag;
+          suggestionsList.appendChild(option);
+        });
+        suggestionsList.hidden = false;
+        tagInput.setAttribute('aria-expanded', 'true');
+      }
+
+      function highlightSuggestion(index) {
+        if (!suggestionsList) return;
+        const options = Array.from(suggestionsList.querySelectorAll('.tag-suggestion'));
+        if (!options.length) {
+          highlightedSuggestionIndex = -1;
+          tagInput?.removeAttribute('aria-activedescendant');
+          return;
+        }
+        if (index < 0) {
+          index = options.length - 1;
+        } else if (index >= options.length) {
+          index = 0;
+        }
+        highlightedSuggestionIndex = index;
+        options.forEach((option, optionIndex) => {
+          option.classList.toggle('is-highlighted', optionIndex === highlightedSuggestionIndex);
+        });
+        const activeOption = options[highlightedSuggestionIndex];
+        if (activeOption) {
+          activeOption.scrollIntoView({ block: 'nearest' });
+          tagInput?.setAttribute('aria-activedescendant', activeOption.id);
+        } else {
+          tagInput?.removeAttribute('aria-activedescendant');
+        }
+      }
+
+      function findBestMatch(query) {
+        if (!query) return null;
+        const availableTags = getAvailableTags();
+        const lowerCaseQuery = query.toLowerCase();
+        return (
+          availableTags.find((tag) => tag.toLowerCase() === lowerCaseQuery) ||
+          availableTags.find((tag) => tag.toLowerCase().startsWith(lowerCaseQuery)) ||
+          availableTags.find((tag) => tag.toLowerCase().includes(lowerCaseQuery)) ||
+          null
+        );
+      }
+
+      function addTag(tag) {
+        if (!tag || activeTagSet.has(tag)) return;
+        activeTags.push(tag);
+        activeTagSet.add(tag);
+        renderSelectedTags();
+        filterEpisodes();
+        if (tagInput) {
+          tagInput.value = '';
+          tagInput.focus();
+        }
+        updateSuggestions();
+      }
+
+      function removeTag(tag) {
+        if (!activeTagSet.has(tag)) return;
+        activeTagSet.delete(tag);
+        const index = activeTags.indexOf(tag);
+        if (index !== -1) {
+          activeTags.splice(index, 1);
+        }
+        renderSelectedTags();
+        filterEpisodes();
+        updateSuggestions();
+      }
+
+      function handleTagInputKeydown(event) {
+        if (!tagInput) return;
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+          if (suggestionsList?.hidden) {
+            updateSuggestions();
+          }
+          const options = suggestionsList ? suggestionsList.querySelectorAll('.tag-suggestion') : [];
+          if (!options.length) {
+            return;
+          }
+          event.preventDefault();
+          const nextIndex =
+            event.key === 'ArrowDown'
+              ? highlightedSuggestionIndex + 1
+              : highlightedSuggestionIndex === -1
+              ? options.length - 1
+              : highlightedSuggestionIndex - 1;
+          highlightSuggestion(nextIndex);
+        } else if (
+          event.key === 'Enter' ||
+          event.key === ',' ||
+          (event.key === 'Tab' && tagInput.value.trim())
+        ) {
+          const options = suggestionsList ? suggestionsList.querySelectorAll('.tag-suggestion') : [];
+          const highlightedOption =
+            highlightedSuggestionIndex >= 0 && options[highlightedSuggestionIndex]
+              ? options[highlightedSuggestionIndex].textContent
+              : null;
+          const candidate = highlightedOption?.trim() || findBestMatch(tagInput.value.trim());
+          if (candidate) {
+            event.preventDefault();
+            addTag(candidate);
+          } else if (event.key === ',') {
+            event.preventDefault();
+          }
+        } else if (event.key === 'Backspace' && !tagInput.value && activeTags.length) {
+          event.preventDefault();
+          removeTag(activeTags[activeTags.length - 1]);
+        } else if (event.key === 'Escape') {
+          if (suggestionsList) {
+            suggestionsList.hidden = true;
+            suggestionsList.innerHTML = '';
+          }
+          highlightedSuggestionIndex = -1;
+          tagInput.setAttribute('aria-expanded', 'false');
+          tagInput.removeAttribute('aria-activedescendant');
+        }
+      }
+
+      function initializeTagSearch() {
+        if (!tagInput || !suggestionsList) return;
+        setTagInputAvailability(false);
+        renderSelectedTags();
+        tagInput.addEventListener('input', () => {
+          highlightedSuggestionIndex = -1;
+          updateSuggestions();
+        });
+        tagInput.addEventListener('focus', () => {
+          highlightedSuggestionIndex = -1;
+          updateSuggestions();
+        });
+        tagInput.addEventListener('blur', () => {
+          setTimeout(() => {
+            if (suggestionsList) {
+              suggestionsList.hidden = true;
+              suggestionsList.innerHTML = '';
+            }
+            tagInput.setAttribute('aria-expanded', 'false');
+            highlightedSuggestionIndex = -1;
+            tagInput.removeAttribute('aria-activedescendant');
+          }, 120);
+        });
+        tagInput.addEventListener('keydown', handleTagInputKeydown);
+        suggestionsList.addEventListener('mousedown', (event) => {
+          event.preventDefault();
+        });
+        suggestionsList.addEventListener('click', (event) => {
+          const option = event.target.closest('.tag-suggestion');
+          if (!option) return;
+          addTag(option.textContent.trim());
+        });
+        selectedTagsContainer?.addEventListener('click', (event) => {
+          const chip = event.target.closest('.tag-chip');
+          if (!chip) return;
+          const tag = chip.getAttribute('data-tag');
+          if (tag) {
+            removeTag(tag);
+            tagInput.focus();
+          }
+        });
+      }
+
+      initializeTagSearch();
 
       async function fetchRssFeed() {
         try {
@@ -681,13 +1175,15 @@
           '';
         const sanitizedDescription = sanitize(rawDescription);
         const summary = item.getElementsByTagName('itunes:summary')[0]?.textContent?.trim();
-        const keywords = item.getElementsByTagName('itunes:keywords')[0]?.textContent?.trim();
+        const rawKeywords = item.getElementsByTagName('itunes:keywords')[0]?.textContent?.trim();
         const cover = item.getElementsByTagName('itunes:image')[0]?.getAttribute('href');
         const guid = normalizeGuid(item.querySelector('guid')?.textContent);
         const appleLink = guid ? appleEpisodeMap.get(guid) : undefined;
+        const keywordList = parseKeywords(rawKeywords || '');
 
         const card = document.createElement('article');
         card.className = 'episode-card';
+        card.dataset.keywords = JSON.stringify(keywordList);
 
         if (cover) {
           const coverWrapper = document.createElement('div');
@@ -753,10 +1249,10 @@
           card.appendChild(actions);
         }
 
-        if (keywords) {
+        if (keywordList.length) {
           const keywordBadge = document.createElement('div');
           keywordBadge.className = 'episode-keywords';
-          keywordBadge.textContent = `關鍵字：${keywords}`;
+          keywordBadge.textContent = `關鍵字：${keywordList.join('、')}`;
           card.appendChild(keywordBadge);
         }
 
@@ -764,6 +1260,8 @@
       }
 
       async function hydrate() {
+        keywordDataReady = false;
+        setTagInputAvailability(false);
         try {
           const appleEpisodesPromise = fetchAppleEpisodeMap();
           const response = await fetchRssFeed();
@@ -819,18 +1317,56 @@
           const items = Array.from(channel.getElementsByTagName('item'));
           const appleEpisodeMap = await appleEpisodesPromise;
           episodesContainer.innerHTML = '';
+          episodesData.length = 0;
+          allKeywordsSet.clear();
+
           if (!items.length) {
             const empty = document.createElement('div');
             empty.className = 'error';
             empty.textContent = '目前尚無公開集數，敬請期待！';
             episodesContainer.appendChild(empty);
+            activeTags.length = 0;
+            activeTagSet.clear();
+            renderSelectedTags();
+            if (tagSearchWrapper) {
+              tagSearchWrapper.hidden = true;
+            }
+            if (noResultsEl) {
+              noResultsEl.hidden = true;
+            }
+            keywordDataReady = false;
+            setTagInputAvailability(false);
           } else {
             const fragment = document.createDocumentFragment();
             items.forEach((item) => {
-              fragment.appendChild(createEpisodeCard(item, appleEpisodeMap));
+              const card = createEpisodeCard(item, appleEpisodeMap);
+              fragment.appendChild(card);
+              const keywordList = card.dataset.keywords ? JSON.parse(card.dataset.keywords) : [];
+              episodesData.push({ element: card, keywords: keywordList });
+              keywordList.forEach((keyword) => allKeywordsSet.add(keyword));
             });
             episodesContainer.appendChild(fragment);
+
+            if (tagSearchWrapper) {
+              tagSearchWrapper.hidden = allKeywordsSet.size === 0;
+            }
+
+            if (activeTags.length) {
+              for (let index = activeTags.length - 1; index >= 0; index -= 1) {
+                const tag = activeTags[index];
+                if (!allKeywordsSet.has(tag)) {
+                  activeTagSet.delete(tag);
+                  activeTags.splice(index, 1);
+                }
+              }
+            }
+            renderSelectedTags();
+            keywordDataReady = allKeywordsSet.size > 0;
+            setTagInputAvailability(keywordDataReady);
           }
+
+          filterEpisodes();
+          updateSuggestions();
 
           const structuredData = {
             '@context': 'https://schema.org/',
