@@ -724,7 +724,6 @@
       <section aria-labelledby="episodes-title">
         <h2 class="section-title" id="episodes-title">最新與歷史集數</h2>
         <div class="tag-search" id="tag-search" hidden>
-          <label class="tag-search-label" for="tag-input">以關鍵字搜尋集數</label>
           <p class="tag-search-hint" id="tag-search-hint">輸入或選擇關鍵字（可複選）來過濾節目</p>
           <div class="tag-search-combobox">
             <div class="tag-search-control">
@@ -794,7 +793,7 @@
       //const APPLE_LOOKUP_URL = 'https://script.google.com/macros/s/AKfycbzXuQi4Xs1yRfpzD4IoFQUCYuOZTKwKDbLJ5YiauAbk0L8FCcDrYCRFhuC2nkMBEFFI/exec';
       const APPLE_LOOKUP_URL = 'apple.json';
       const normalizeGuid = (value) => (typeof value === 'string' ? value.trim().toLowerCase() : '');
-      const TAG_SUGGESTION_LIMIT = 8;
+      const TAG_SUGGESTION_LIMIT = 100;
 
       function parseKeywords(keywordString = '') {
         const seen = new Set();
