@@ -3,7 +3,7 @@ name: Auto Fetch Feeds and Generate Index
 on:
   # 來自 auto-fetch-feeds.yml 的觸發器
   schedule:
-    - cron: '15 2 * * *'
+    - cron: '15 * * * *'
     
   # 來自 generate-index.yml 的觸發器
   # 當相關檔案被 push 或 PR 時觸發
