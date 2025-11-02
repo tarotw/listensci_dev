@@ -4,19 +4,19 @@ on:
   push:
     paths:
       - 'index.html'
-      - 'index2.html'
+      - 'index_template.html'
       - 'soundon.xml'
       - 'apple.json'
       - 'scripts/**'
-      - '.github/workflows/generate-index2.yml'
+      - '.github/workflows/generate-index.yml'
   pull_request:
     paths:
       - 'index.html'
-      - 'index2.html'
+      - 'index_template.html'
       - 'soundon.xml'
       - 'apple.json'
       - 'scripts/**'
-      - '.github/workflows/generate-index2.yml'
+      - '.github/workflows/generate-index.yml'
   workflow_dispatch:
 
 jobs:
@@ -29,11 +29,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: Generate index2.html
-        run: python scripts/generate_index2.py
+      - name: Generate index.html
+        run: python scripts/generate_index.py
       - name: Verify generated file is up to date
         run: |
-          if ! git diff --exit-code index2.html; then
-            echo 'index2.html is not up to date. Run python scripts/generate_index2.py and commit the result.' >&2
+          if ! git diff --exit-code index.html; then
+            echo 'index.html is not up to date. Run python scripts/generate_index.py and commit the result.' >&2
             exit 1
           fi
