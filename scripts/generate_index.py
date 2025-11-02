@@ -14,9 +14,6 @@ from pathlib import Path
 from typing import Iterable, List
 from zoneinfo import ZoneInfo
 import xml.etree.ElementTree as ET
-import requests
-import os
-import sys
 
 ROOT = Path(__file__).resolve().parent.parent
 RSS_PATH = ROOT / "soundon.xml"
