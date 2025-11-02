@@ -2,7 +2,7 @@ name: Auto Fetch Podcast Feeds
 
 on:
   schedule:
-    - cron: '15 * * * *'
+    - cron: '15 2 * * *'
   workflow_dispatch: {}      # 允許手動觸發
 permissions:
   contents: write
