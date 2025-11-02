@@ -1,4 +1,4 @@
-name: Generate static index2
+name: Generate static index
 
 on:
   push:
