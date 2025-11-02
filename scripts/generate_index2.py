@@ -18,8 +18,8 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parent.parent
 RSS_PATH = ROOT / "soundon.xml"
 APPLE_PATH = ROOT / "apple.json"
-TEMPLATE_PATH = ROOT / "index.html"
-OUTPUT_PATH = ROOT / "index2.html"
+TEMPLATE_PATH = ROOT / "index_template.html"
+OUTPUT_PATH = ROOT / "index.html"
 
 ITUNES_NS = "{http://www.itunes.com/dtds/podcast-1.0.dtd}"
 CONTENT_NS = "{http://purl.org/rss/1.0/modules/content/}"
