@@ -1,0 +1,129 @@
+name: Auto Fetch Feeds and Generate Index
+
+on:
+  # 來自 auto-fetch-feeds.yml 的觸發器
+  schedule:
+    - cron: '15 2 * * *'
+    
+  # 來自 generate-index.yml 的觸發器
+  # 當相關檔案被 push 或 PR 時觸發
+  push:
+    paths:
+      - 'index_template.html'
+      - 'soundon.xml'
+      - 'apple.json'
+      - 'scripts/**'
+      # 注意：這裡的路徑要改成這個合併後的新 yml 檔案名稱
+      - '.github/workflows/auto-update.yml' 
+  pull_request:
+    paths:
+      - 'index_template.html'
+      - 'soundon.xml'
+      - 'apple.json'
+      - 'scripts/**'
+      # 注意：這裡的路徑要改成這個合併後的新 yml 檔案名稱
+      - '.github/workflows/auto-update.yml'
+      
+  # 兩者都有的手動觸發
+  workflow_dispatch: {}
+
+permissions:
+  contents: write  # 需要寫入權限才能 commit & push
+
+jobs:
+  fetch-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Show date/time
+        run: |
+          echo "Runner UTC time: $(date -u)"
+          echo "Runner local time: $(date)"
+
+      # --- 來自 auto-fetch-feeds.yml 的步驟 ---
+      # 只有在非 PR 事件時才下載 (schedule, push, workflow_dispatch)
+      - name: Download feeds to temp files (non-PR only)
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+
+          # 下載到暫存檔
+          curl -fL --retry 5 --retry-delay 3 \
+            "https://feeds.soundon.fm/podcasts/cbbe3124-188a-4de6-87b4-2b65ed4f2d46.xml" \
+            -o soundon.xml.tmp
+
+          curl -fL --retry 5 --retry-delay 3 \
+            "https://itunes.apple.com/lookup?id=1812447277&country=tw&media=podcast&entity=podcastEpisode&limit=300" \
+            -o apple.json.tmp
+
+          # 如果新檔和舊檔不同，才覆蓋
+          if [ -f soundon.xml ]; then
+            if cmp -s soundon.xml.tmp soundon.xml; then
+              echo "soundon.xml unchanged."
+              rm soundon.xml.tmp
+            else
+              mv soundon.xml.tmp soundon.xml
+              echo "soundon.xml updated."
+            fi
+          else
+            mv soundon.xml.tmp soundon.xml
+            echo "soundon.xml created."
+          fi
+
+          if [ -f apple.json ]; then
+            if cmp -s apple.json.tmp apple.json; then
+              echo "apple.json unchanged."
+              rm apple.json.tmp
+            else
+              mv apple.json.tmp apple.json
+              echo "apple.json updated."
+            fi
+          else
+            mv apple.json.tmp apple.json
+            echo "apple.json created."
+          fi
+
+      # --- 來自 generate-index.yml 的步驟 ---
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate index.html
+        run: python scripts/generate_index.py
+
+      # --- 來自 generate-index.yml 的驗證步驟 ---
+      # PR 情境只做驗證 (此時不會下載新 feeds，只驗證 PR 中的檔案是否一致)
+      - name: Verify generated file is up to date (PR only)
+        if: github.event_name == 'pull_request'
+        run: |
+          if ! git diff --exit-code index.html; then
+            echo 'index.html is not up to date. Run python scripts/generate_index.py and commit the result.' >&2
+            exit 1
+          fi
+
+      # --- 合併的 Commit 步驟 ---
+      # 非 PR 情境：若有變更 (feeds 或 index.html)，自動提交
+      - name: Commit changes (non-PR)
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 檢查是否有變更
+          if [ -n "$(git status --porcelain)" ]; then
+            # 將所有可能變更的檔案加入
+            git add soundon.xml apple.json index.html
+            # commit 訊息加上 [skip ci] 避免觸發 CI 迴圈
+            git commit -m "chore: Auto update feeds and regenerate index [skip ci]"
+            git push
+            echo "Changes committed & pushed."
+          else
+            echo "No changes to commit."
+          fi
