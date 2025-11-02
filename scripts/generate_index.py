@@ -14,10 +14,13 @@ from pathlib import Path
 from typing import Iterable, List
 from zoneinfo import ZoneInfo
 import xml.etree.ElementTree as ET
+import requests
+import os
+import sys
 
 ROOT = Path(__file__).resolve().parent.parent
-RSS_PATH = "https://feeds.soundon.fm/podcasts/cbbe3124-188a-4de6-87b4-2b65ed4f2d46.xml"
-APPLE_PATH = "https://itunes.apple.com/lookup?id=1812447277&country=tw&media=podcast&entity=podcastEpisode&limit=300"
+RSS_PATH = ROOT / "soundon.xml"
+APPLE_PATH = ROOT / "apple.json"
 TEMPLATE_PATH = ROOT / "index_template.html"
 OUTPUT_PATH = ROOT / "index.html"
 
