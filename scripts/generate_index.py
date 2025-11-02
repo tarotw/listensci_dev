@@ -16,8 +16,8 @@ from zoneinfo import ZoneInfo
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent.parent
-RSS_PATH = ROOT / "soundon.xml"
-APPLE_PATH = ROOT / "apple.json"
+RSS_PATH = "https://feeds.soundon.fm/podcasts/cbbe3124-188a-4de6-87b4-2b65ed4f2d46.xml"
+APPLE_PATH = "https://itunes.apple.com/lookup?id=1812447277&country=tw&media=podcast&entity=podcastEpisode&limit=300"
 TEMPLATE_PATH = ROOT / "index_template.html"
 OUTPUT_PATH = ROOT / "index.html"
 
