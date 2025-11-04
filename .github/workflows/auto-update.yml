@@ -3,7 +3,7 @@ name: Auto Fetch Feeds and Generate Index
 on:
   # 來自 auto-fetch-feeds.yml 的觸發器
   schedule:
-    - cron: '50 * * * *'
+    - cron: '15 2 * * *'
     
   # 來自 generate-index.yml 的觸發器
   # 當相關檔案被 push 或 PR 時觸發
@@ -45,18 +45,27 @@ jobs:
           echo "Runner UTC time: $(date -u)"
           echo "Runner local time: $(date)"
 
-      # --- 來自 auto-fetch-feeds.yml 的步驟 ---
+      # --- 來自 auto-fetch-feeds.yml 的步驟 (已修改) ---
       # 只有在非 PR 事件時才下載 (schedule, push, workflow_dispatch)
-      - name: Download feeds to temp files (non-PR only)
+      - name: Download feeds and clean (non-PR only)
         if: github.event_name != 'pull_request'
         run: |
           set -euo pipefail
 
-          # 下載到暫存檔
+          # 下載 soundon.xml 到暫存檔
           curl -fL --retry 5 --retry-delay 3 \
             "https://feeds.soundon.fm/podcasts/cbbe3124-188a-4de6-87b4-2b65ed4f2d46.xml" \
             -o soundon.xml.tmp
+          
+          # 【新增步驟】移除 "Hosting provided by..." 和 "<br />--<br />" 字串
+          echo "Cleaning soundon.xml.tmp..."
+          sed -i \
+            -e 's|Hosting provided by <a href="https://www.soundon.fm/">SoundOn</a>||g' \
+            -e 's|<br />--<br />||g' \
+            soundon.xml.tmp
+          echo "Cleaning complete."
 
+          # 下載 apple.json 到暫存檔
           curl -fL --retry 5 --retry-delay 3 \
             "https://itunes.apple.com/lookup?id=1812447277&country=tw&media=podcast&entity=podcastEpisode&limit=300" \
             -o apple.json.tmp
@@ -108,22 +117,4 @@ jobs:
           fi
 
       # --- 合併的 Commit 步驟 ---
-      # 非 PR 情境：若有變更 (feeds 或 index.html)，自動提交
-      - name: Commit changes (non-PR)
-        if: github.event_name != 'pull_request'
-        run: |
-          set -euo pipefail
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # 檢查是否有變更
-          if [ -n "$(git status --porcelain)" ]; then
-            # 將所有可能變更的檔案加入
-            git add soundon.xml apple.json index.html
-            # commit 訊息加上 [skip ci] 避免觸發 CI 迴圈
-            git commit -m "chore: Auto update feeds and regenerate index [skip ci]"
-            git push
-            echo "Changes committed & pushed."
-          else
-            echo "No changes to commit."
-          fi
+      # 非 PR 情境：
