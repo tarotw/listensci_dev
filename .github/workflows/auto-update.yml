@@ -117,4 +117,22 @@ jobs:
           fi
 
       # --- 合併的 Commit 步驟 ---
-      # 非 PR 情境：
+      # 非 PR 情境：若有變更 (feeds 或 index.html)，自動提交
+      - name: Commit changes (non-PR)
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 檢查是否有變更
+          if [ -n "$(git status --porcelain)" ]; then
+            # 將所有可能變更的檔案加入
+            git add soundon.xml apple.json index.html
+            # commit 訊息加上 [skip ci] 避免觸發 CI 迴圈
+            git commit -m "chore: Auto update feeds and regenerate index [skip ci]"
+            git push
+            echo "Changes committed & pushed."
+          else
+            echo "No changes to commit."
+          fi
